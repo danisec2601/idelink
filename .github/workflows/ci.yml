@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with: { distribution: temurin, java-version: "25" }
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with: { go-version-file: bridge/go.mod }
+        with: { go-version: "1.27.3" }
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
       - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with: { working-directory: bridge, version: v2.15.0 }
@@ -54,14 +54,14 @@ jobs:
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with: { distribution: temurin, java-version: "25" }
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with: { go-version-file: bridge/go.mod }
+        with: { go-version: "1.27.3" }
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
       - name: Build plugin and bridge
         run: |
           mkdir -p dist
           (cd plugin && ./gradlew $GRADLE_ARGS buildPlugin :backend:test)
           python3 scripts/tools_doc.py check
-          (cd bridge && CGO_ENABLED=0 go build -trimpath -ldflags=-buildid= -o ../dist/idelink-bridge .)
+          (cd bridge && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags=-buildid= -o ../dist/idelink-bridge .)
           cp plugin/build/distributions/idelink-*.zip scripts/install-bridge.sh dist/
           (cd dist && sha256sum * > SHA256SUMS && cat SHA256SUMS)
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2

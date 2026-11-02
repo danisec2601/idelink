@@ -37,7 +37,7 @@ Individually:
 | Plugin build + tests | `cd plugin && ./gradlew buildPlugin :backend:test` (the root `:test` has no tests) |
 | Plugin Verifier | `cd plugin && ./gradlew verifyPluginStructure verifyPlugin` (report: `plugin/build/reports/pluginVerifier/`); add installed IDEs with `-PverifyIdeDirs=<dir>,<dir>` |
 | Kotlin lint | `cd plugin && ./gradlew detekt` |
-| Bridge build | `cd bridge && CGO_ENABLED=0 go build -trimpath -o idelink-bridge .` |
+| Bridge build | `cd bridge && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags=-buildid= -o idelink-bridge .` (go1.27.3, as in `go.mod`'s toolchain line; release builds are byte-reproducible) |
 | Bridge tests | `cd bridge && go vet ./... && go test ./...` |
 | Go lint | `cd bridge && golangci-lint run ./...` (config: `bridge/.golangci.yml`) |
 | Comment heuristics | `python3 scripts/comment_lint.py plugin bridge` |

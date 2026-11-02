@@ -194,17 +194,18 @@ directory from step 3), so after a client-side uninstall, reinstall both halves.
 
 ## Building from source
 
-Needs JDK 25, Go (the version in `bridge/go.mod` or newer), and network access to Maven Central and JetBrains'
+Needs JDK 25, Go 1.27.3 (the `toolchain` in `bridge/go.mod`; a newer Go fetches it unless `GOTOOLCHAIN=local`), and network access to Maven Central and JetBrains'
 repositories on the first build.
 
 ```sh
 cd plugin && ./gradlew buildPlugin -PideDir=      # downloads the IDE named by platformVersion
                                                    # or -PideDir=/path/to/installed/backend to use that one
 ls build/distributions/idelink-*.zip
-cd ../bridge && CGO_ENABLED=0 go build -trimpath -o idelink-bridge .
+cd ../bridge && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags=-buildid= -o idelink-bridge .
 ```
 
-Then continue at step 2 with your own files and their `sha256sum`.
+With Go 1.27.3 the bridge is byte-identical to the release's `idelink-bridge`, so `sha256sum` checks it against
+`SHA256SUMS`. Then continue at step 2 with your own files and their `sha256sum`.
 
 ## For agents
 
