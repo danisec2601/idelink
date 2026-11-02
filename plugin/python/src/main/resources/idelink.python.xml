@@ -1,0 +1,11 @@
+<idea-plugin>
+  <dependencies>
+    <module name="idelink.backend"/>
+    <module name="intellij.python.psi"/>
+    <module name="intellij.python.psi.impl"/>
+    <module name="intellij.python.community.impl"/>
+  </dependencies>
+  <extensions defaultExtensionNs="io.github.danisec2601.idelink">
+    <languageAnalysis implementation="io.github.danisec2601.idelink.python.PythonAnalysis"/>
+  </extensions>
+</idea-plugin>

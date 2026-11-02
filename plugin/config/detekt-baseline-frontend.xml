@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:EditorReporter.kt:EditorReporter${}</ID>
+    <ID>MagicNumber:EditorReporter.kt:EditorReporter$250</ID>
+    <ID>MagicNumber:TourPanel.kt:TourPanel$0.5f</ID>
+    <ID>MagicNumber:TourPanel.kt:TourPanel$200</ID>
+    <ID>MagicNumber:TourPanel.kt:TourPanel$2000</ID>
+    <ID>MaxLineLength:TourPanel.kt:TourPanel$if (tourId == id &amp;&amp; list.selectedIndex == index) note.text = "(couldn't open: ${Plain.text(why, 200)})\n\n" + note.text</ID>
+    <ID>MaxLineLength:TourPanel.kt:TourPanel.&lt;no name provided>$override</ID>
+  </CurrentIssues>
+</SmellBaseline>

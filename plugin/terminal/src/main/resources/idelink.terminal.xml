@@ -1,0 +1,18 @@
+<idea-plugin>
+  <dependencies>
+    <module name="intellij.platform.frontend"/>
+    <module name="intellij.platform.rpc.topics"/>
+    <module name="intellij.terminal.frontend"/>
+    <plugin id="org.jetbrains.plugins.terminal"/>
+    <module name="idelink.shared"/>
+  </dependencies>
+  <extensions defaultExtensionNs="com.intellij">
+    <platform.rpc.projectRemoteTopicListener implementation="io.github.danisec2601.idelink.terminal.TerminalRequestListener"
+                                             topicId="io.github.danisec2601.idelink.terminalRequest"/>
+    <actionConfigurationCustomizer implementation="io.github.danisec2601.idelink.terminal.ShareTerminalMenu"/>
+  </extensions>
+  <actions>
+    <action id="idelink.ShareTerminal" class="io.github.danisec2601.idelink.terminal.ShareTerminalAction"
+            text="Share with Claude" description="Let Claude read this terminal tab on request (idelink)"/>
+  </actions>
+</idea-plugin>

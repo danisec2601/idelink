@@ -1,0 +1,10 @@
+build/
+plugin/.gradle/
+plugin/.kotlin/
+.idea/
+plugin/.intellijPlatform/
+tmp/
+__pycache__/
+/bridge/bridge
+/bridge/idelink-bridge
+/dist/

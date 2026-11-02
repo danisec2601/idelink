@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>MagicNumber:Plain.kt:Invisible$0xE0100</ID>
+    <ID>MagicNumber:Plain.kt:Invisible$0xE01EF</ID>
+    <ID>MagicNumber:Plain.kt:Invisible$0xFE00</ID>
+    <ID>MagicNumber:Plain.kt:Invisible$0xFE0F</ID>
+  </CurrentIssues>
+</SmellBaseline>

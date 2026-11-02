@@ -1,0 +1,18 @@
+# Layered on detekt's defaults (buildUponDefaultConfig). Comment rules: docs/decisions.md D-032.
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: true
+  UndocumentedPublicFunction:
+    active: true
+  UndocumentedPublicProperty:
+    active: true
+  OutdatedDocumentation:
+    active: true
+    allowParamOnConstructorProperties: true
+  KDocReferencesNonPublicProperty:
+    active: true
+  DocumentationOverPrivateFunction:
+    active: false
+  DocumentationOverPrivateProperty:
+    active: false

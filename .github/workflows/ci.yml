@@ -1,0 +1,109 @@
+# Draft: not yet run on GitHub. Releases are created as drafts for the maintainer to publish.
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GRADLE_ARGS: -PideDir=
+
+jobs:
+  check:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with: { distribution: temurin, java-version: "25" }
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: bridge/go.mod }
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with: { working-directory: bridge, version: v2.15.0 }
+      - name: scripts/check.sh
+        env: { SKIP_GOLANGCI: "1" }
+        run: scripts/check.sh $GRADLE_ARGS
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Tag matches the plugin and bridge versions
+        shell: bash
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          plugin=$(sed -n 's/^version = "\(.*\)"$/\1/p' plugin/build.gradle.kts)
+          bridge=$(sed -n 's/^const version = "\(.*\)"$/\1/p' bridge/main.go)
+          echo "tag=$tag plugin=$plugin bridge=$bridge"
+          [ -n "$tag" ] && [ "$tag" = "$plugin" ] && [ "$tag" = "$bridge" ]
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with: { distribution: temurin, java-version: "25" }
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: bridge/go.mod }
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      - name: Build plugin and bridge
+        run: |
+          mkdir -p dist
+          (cd plugin && ./gradlew $GRADLE_ARGS buildPlugin :backend:test)
+          python3 scripts/tools_doc.py check
+          (cd bridge && CGO_ENABLED=0 go build -trimpath -ldflags=-buildid= -o ../dist/idelink-bridge .)
+          cp plugin/build/distributions/idelink-*.zip scripts/install-bridge.sh dist/
+          (cd dist && sha256sum * > SHA256SUMS && cat SHA256SUMS)
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            dist/idelink-*.zip
+            dist/idelink-bridge
+            dist/install-bridge.sh
+      - name: Publish release
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --draft --title "$GITHUB_REF_NAME" dist/*
+
+  verifier:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    strategy:
+      fail-fast: false
+      matrix:
+        channel: [RELEASE]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with: { distribution: temurin, java-version: "25" }
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      - name: Plugin Verifier against the newest ${{ matrix.channel }}
+        id: verify
+        working-directory: plugin
+        run: ./gradlew $GRADLE_ARGS -PverifyChannel=${{ matrix.channel }} verifyPlugin 2>&1 | tee ../verifier.log; exit ${PIPESTATUS[0]}
+        shell: bash
+      - name: Open an issue for a new failure
+        if: failure() && steps.verify.outcome == 'failure'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        shell: bash
+        run: |
+          ide=$(ls plugin/build/reports/pluginVerifier 2>/dev/null | head -1)
+          title="Plugin Verifier fails against ${ide:-the newest ${{ matrix.channel }}}"
+          if [ -n "$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[].number')" ]; then
+            echo "already reported: $title"; exit 0
+          fi
+          { echo "Scheduled run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; echo
+            echo '```'; tail -60 verifier.log; echo '```'; } > body.md
+          gh issue create --title "$title" --body-file body.md

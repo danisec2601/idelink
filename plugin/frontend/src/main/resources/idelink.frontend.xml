@@ -1,0 +1,27 @@
+<idea-plugin>
+  <dependencies>
+    <module name="intellij.platform.frontend"/>
+    <module name="intellij.platform.rpc.topics"/>
+    <module name="idelink.shared"/>
+  </dependencies>
+  <extensions defaultExtensionNs="com.intellij">
+    <postStartupActivity implementation="io.github.danisec2601.idelink.frontend.EditorReporterStartup"/>
+    <platform.rpc.projectRemoteTopicListener implementation="io.github.danisec2601.idelink.frontend.ShowDiffListener"
+                                             topicId="io.github.danisec2601.idelink.showDiff"/>
+    <platform.rpc.projectRemoteTopicListener implementation="io.github.danisec2601.idelink.frontend.TourListener"
+                                             topicId="io.github.danisec2601.idelink.tour"/>
+    <platform.rpc.projectRemoteTopicListener implementation="io.github.danisec2601.idelink.frontend.OpenOfferListener"
+                                             topicId="io.github.danisec2601.idelink.openOffer"/>
+    <notificationGroup id="idelink.arrival" displayType="STICKY_BALLOON"/>
+    <notificationGroup id="idelink.info" displayType="BALLOON"/>
+    <applicationConfigurable parentId="tools" id="io.github.danisec2601.idelink.settings" displayName="idelink"
+                             instance="io.github.danisec2601.idelink.frontend.ArrivalConfigurable"/>
+    <toolWindow id="idelink Tour" anchor="bottom" factoryClass="io.github.danisec2601.idelink.frontend.TourToolWindowFactory"
+                canCloseContents="false" doNotActivateOnStart="true"/>
+  </extensions>
+  <actions>
+    <action id="idelink.ResetArrivalPrompts" class="io.github.danisec2601.idelink.frontend.ResetArrivalAction"
+            text="idelink: Ask again before showing tours, files and diffs"
+            description="Ask again before showing a review tour, file or diff Claude sends"/>
+  </actions>
+</idea-plugin>

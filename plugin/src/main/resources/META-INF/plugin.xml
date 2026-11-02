@@ -1,0 +1,24 @@
+<idea-plugin>
+  <id>io.github.danisec2601.idelink</id>
+  <name>idelink</name>
+  <vendor url="https://github.com/danisec2601/idelink">danisec2601</vendor>
+  <description>A narrow, peer-gated bridge that lets Claude Code on the host present files and read IDE state. The
+    frontend module (thin client) reports editor state (paths, caret, selection bounds; no contents) and displays
+    what the backend sends: open-at-line, a show-only diff, a review tour. Terminal tabs the user shares (per tab,
+    off by default) can be read on request; nothing ever types into a terminal.</description>
+  <change-notes><![CDATA[
+    <p>0.5.2</p>
+    <ul>
+      <li>First public release, for the 2026.2.4 releases of PyCharm, GoLand, IntelliJ IDEA and Rider (through 2026.3).</li>
+      <li>Claude can open files, show proposed changes as show-only diffs, give review tours, read the editor state and
+        the IDE's own analysis, and read terminal tabs you share. Every Claude session needs your approval first.</li>
+    </ul>
+  ]]></change-notes>
+  <content>
+    <module name="idelink.shared" loading="required"/>
+    <module name="idelink.frontend"/>
+    <module name="idelink.backend"/>
+    <module name="idelink.terminal"/>
+    <module name="idelink.python" loading="optional"/>
+  </content>
+</idea-plugin>

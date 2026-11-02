@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:PresentTools.kt:PresentTools$private fun ideState: JsonElement</ID>
+    <ID>CyclomaticComplexMethod:PresentTools.kt:PresentTools$private fun selection: JsonElement</ID>
+    <ID>CyclomaticComplexMethod:Server.kt:Server$private fun serve</ID>
+    <ID>EmptyElseBlock:Server.kt:Server$if (closed) return</ID>
+    <ID>LoopWithTooManyJumpStatements:PresentTools.kt:PresentTools$for</ID>
+    <ID>LoopWithTooManyJumpStatements:Server.kt:Server$while</ID>
+    <ID>MagicNumber:Native.kt:Sys$0xff</ID>
+    <ID>MagicNumber:Native.kt:Sys$108</ID>
+    <ID>MagicNumber:Native.kt:Sys$16</ID>
+    <ID>MagicNumber:Native.kt:Sys$24</ID>
+    <ID>MagicNumber:Native.kt:Sys$3</ID>
+    <ID>MagicNumber:Native.kt:Sys$4</ID>
+    <ID>MagicNumber:Native.kt:Sys$8</ID>
+    <ID>MagicNumber:PeerGate.kt:PeerGate$19</ID>
+    <ID>MagicNumber:PeerGate.kt:PeerGate$8</ID>
+    <ID>MagicNumber:Policy.kt:Policy$1024</ID>
+    <ID>MagicNumber:PresentTools.kt:PresentTools$200</ID>
+    <ID>MagicNumber:PresentTools.kt:PresentTools$2000</ID>
+    <ID>MagicNumber:PresentTools.kt:PresentTools$500</ID>
+    <ID>MagicNumber:Server.kt:Audit$500</ID>
+    <ID>MagicNumber:Server.kt:Server$64</ID>
+    <ID>MagicNumber:Texts.kt:Texts$10</ID>
+    <ID>MagicNumber:Texts.kt:Texts$1024</ID>
+    <ID>MagicNumber:Texts.kt:Texts$200</ID>
+    <ID>MagicNumber:Texts.kt:Texts$5</ID>
+    <ID>MagicNumber:Tools.kt:Schema.Obj$64</ID>
+    <ID>MaxLineLength:ClientNavigator.kt:ClientNavigator$doc.getLineEndOffset(last - 1)</ID>
+    <ID>MaxLineLength:GateTest.kt:GateTest$assertTrue(auditText().contains("bridge binary untrusted") &amp;&amp; auditText().contains("not owned by root"), auditText())</ID>
+    <ID>MaxLineLength:GateTest.kt:GateTest$val copy = dir.resolve("bridge-copy")</ID>
+    <ID>MaxLineLength:PathScope.kt:PathScope$else -> throw BadArgs("path resolves in several projects (${hits.joinToString { it.project }}); pass project")</ID>
+    <ID>MaxLineLength:PeerGate.kt:PeerGate$if (!sameFile(Path.of("/proc/$pid/exe"), bridgePath)) return Verdict.Deny("peer $pid is not the bridge binary")</ID>
+    <ID>MaxLineLength:PeerGate.kt:PeerGate$val (_, uid, _) = try { Sys.peerCred(fd) } catch (e: Exception) { return Verdict.Deny("peercred: ${e.message}") }</ID>
+    <ID>MaxLineLength:Policy.kt:Policy$if (chars > MAX_SELECTION) return "selection is $chars characters, over the ${MAX_SELECTION / 1024}K-character cap"</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$"(project-relative). Files outside the project root are left out (counted, not named). No file contents."</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$"selections in files whose name looks secret-bearing (.env, .env.*, *.env, *.env.*, *.pem, *.key, *.p12, *.pfx, id_rsa*, "</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$doc.getLineNumber(sel.startOffset) + 1 != sel.startLine</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$if</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$if (entry == null) { why += "${project.name}: no report from the thin client yet (frontend module installed there?)"; continue }</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$if (s.redactions.isNotEmpty()) out.add("redacted", JsonObject().apply { s.redactions.forEach { (k, n) -> addProperty(k, n) } })</ID>
+    <ID>MaxLineLength:PresentTools.kt:PresentTools$}</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:PathScopeTest$Files.delete(proj.resolve("a.txt"))</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:PathScopeTest$bad("../other/secret.txt")</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:PlainAndInvisibleTest$assertTrue(Texts.invisibleWarning("a‮b")!!.contains("1 bidi/invisible character: 1:2 U+202E RIGHT-TO-LEFT OVERRIDE"))</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:PolicyTest$for (n in listOf("README.md", "x.MD", "page.html", "i.svg", "n.ipynb", "d.puml")) assertTrue(Policy.refuseRendered(n) != null, n)</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:SchemaTest$@Test fun nestedItemErrorsNameTheItem</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:TextsTest$assertTrue(p.waitFor(20, TimeUnit.SECONDS))</ID>
+    <ID>MaxLineLength:ScopeAndTextTest.kt:TextsTest$git("init", "-q")</ID>
+    <ID>MaxLineLength:Scrub.kt:Scrub$"""id_ecdsa.*"""</ID>
+    <ID>MaxLineLength:Scrub.kt:Scrub$"private-key" to Regex("""-----BEGIN [A-Z0-9 ]*PRIVATE KEY(?: BLOCK)?-----[\s\S]*?(?:-----END [A-Z0-9 ]*PRIVATE KEY(?: BLOCK)?-----|\z)""")</ID>
+    <ID>MaxLineLength:Scrub.kt:Scrub$/** Each distinct secret gets a fresh random placeholder per call, so placeholders can't be correlated across reads. */</ID>
+    <ID>MaxLineLength:Scrub.kt:Scrub$secretNames.firstOrNull { it.matches(lc) }?.let { return "'$part' matches the secret-bearing name pattern ${it.pattern}" }</ID>
+    <ID>MaxLineLength:ScrubTest.kt:ScrubTest$private val jwt = b64("{\"alg\":\"HS256\"}") + "." + b64("{\"sub\":\"test-only\"}") + "." + b64("not-a-real-signature")</ID>
+    <ID>MaxLineLength:ScrubTest.kt:ScrubTest$val pgp = "-----BEGIN PGP " + "PRIVATE KEY BLOCK-----\n" + pemBody + "\n-----END PGP " + "PRIVATE KEY BLOCK-----"</ID>
+    <ID>MaxLineLength:Texts.kt:Texts$fun sha256: String</ID>
+    <ID>MaxLineLength:Texts.kt:Texts$if (!ref.matches(r) || r.contains("..")) throw BadArgs("from_ref must be a plain git revision (branch, tag, sha, HEAD~n)")</ID>
+    <ID>MaxLineLength:Tools.kt:Schema.Obj$class</ID>
+    <ID>MaxLineLength:Tours.kt:BackendTourApi$val</ID>
+    <ID>ReturnCount:PathScope.kt:PathScope$fun under: Resolved?</ID>
+    <ID>ReturnCount:PeerGate.kt:PeerGate$fun check: Verdict</ID>
+    <ID>ReturnCount:Policy.kt:Policy$fun withholdSelection: String?</ID>
+    <ID>ReturnCount:PresentTools.kt:PresentTools$private fun selection: JsonElement</ID>
+    <ID>ReturnCount:Server.kt:Server$private fun serve</ID>
+    <ID>ReturnCount:Tours.kt:BackendTourApi$override suspend fun openStop: String?</ID>
+    <ID>SwallowedException:PathScope.kt:PathScope$e: InvalidPathException</ID>
+    <ID>SwallowedException:PresentTools.kt:PresentTools$e: BadArgs</ID>
+    <ID>SwallowedException:Server.kt:Server$e: Exception</ID>
+    <ID>SwallowedException:Server.kt:Server$e: TooLong</ID>
+    <ID>SwallowedException:Texts.kt:Texts$e: CharacterCodingException</ID>
+    <ID>ThrowsCount:Native.kt:Sys$fun listenUnix: Int</ID>
+    <ID>ThrowsCount:PresentTools.kt:PresentTools$private fun openFile: JsonElement</ID>
+    <ID>ThrowsCount:PresentTools.kt:PresentTools$private fun tour: JsonElement</ID>
+    <ID>ThrowsCount:Texts.kt:Texts$fun gitBlob: String</ID>
+    <ID>ThrowsCount:Tools.kt:Schema.Arr$override fun check</ID>
+    <ID>ThrowsCount:Tools.kt:Schema.Obj$override fun check</ID>
+    <ID>TooGenericExceptionCaught:PeerGate.kt:PeerGate$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Server.kt:Server$e: Exception</ID>
+    <ID>TooManyFunctions:Native.kt:LibC</ID>
+    <ID>TooManyFunctions:PresentTools.kt:PresentTools</ID>
+  </CurrentIssues>
+</SmellBaseline>
