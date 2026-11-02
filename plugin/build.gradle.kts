@@ -25,6 +25,15 @@ val verifyIdeDirs = providers.gradleProperty("verifyIdeDirs")
     .map { dirs -> dirs.split(',').map(String::trim).filter(String::isNotEmpty) }
     .orElse(emptyList())
 
+// Releases target stable IDEs (D-080); -PallowPrerelease builds against an EAP, Beta or RC anyway.
+val allowPrerelease = providers.gradleProperty("allowPrerelease").isPresent
+
+fun refusePrerelease(what: String, suffix: String) {
+    if (suffix.isNotBlank() && !allowPrerelease) {
+        throw GradleException("$what is a pre-release ($suffix); build against a stable IDE, or pass -PallowPrerelease")
+    }
+}
+
 // One IDE for every module: an installed one when ideDir is set, else PyCharm platformVersion from JetBrains.
 fun IntelliJPlatformDependenciesExtension.platform() {
     if (ideDir.isPresent) {
@@ -33,6 +42,9 @@ fun IntelliJPlatformDependenciesExtension.platform() {
             throw GradleException("ideDir=$dir is not a directory: pass -PideDir=<an installed IDE>, or -PideDir= " +
                 "(empty) to download PyCharm ${platformVersion.get()}")
         }
+        @Suppress("UNCHECKED_CAST")
+        val info = groovy.json.JsonSlurper().parse(dir.resolve("product-info.json")) as Map<String, Any?>
+        refusePrerelease("ideDir=$dir", info["versionSuffix"]?.toString().orEmpty())
         local(dir)
     } else {
         pycharm(platformVersion)

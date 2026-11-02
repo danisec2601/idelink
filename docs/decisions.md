@@ -4,6 +4,16 @@ Newest first. Each entry: Context, Decision, Consequences, and optionally what w
 is replaced stays here, marked superseded, with a pointer to its replacement. Code comments don't carry
 rationale; it lives here (see [AGENTS.md](../AGENTS.md)).
 
+## D-080 The build refuses a pre-release IDE (2026-11-02, accepted)
+Context: through 0.4.4 the plugin was built, pinned and live-tested only against 2026.3 EAP, Beta and RC builds,
+because those were the IDEs at hand; no check asked whether users run them (D-075).
+Decision: the build fails when `ideDir` names an IDE whose `product-info.json` has a `versionSuffix` (EAP, Beta,
+RC). `-PallowPrerelease` overrides.
+Consequences:
+- Targeting a pre-release IDE at hand takes a deliberate flag. Verifying against one (`verifyIdeDirs`) is allowed.
+- `platformVersion` (the download) isn't checked: a build number doesn't say whether it was a release, so a change
+  to it has to be checked against JetBrains' release list by whoever makes it.
+
 ## D-079 The weekly Plugin Verifier run checks releases only (2026-11-02, accepted)
 Context: the maintainer supports stable releases and doesn't track EAP builds (D-075); an issue for every EAP
 breakage would be noise.

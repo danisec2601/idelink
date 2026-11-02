@@ -44,7 +44,8 @@ Individually:
 | Tool list in step | `python3 scripts/tools_doc.py check` (after `:backend:test`, which writes `plugin/backend/build/tool-list.json`) |
 
 The build uses the IDE at `ideDir` (Gradle property, `-PideDir=/path`) if set, otherwise downloads PyCharm
-`platformVersion`; a set `ideDir` that isn't a directory fails the build. `scripts/check.sh` passes
+`platformVersion`; a set `ideDir` that isn't a directory, or is an EAP, Beta or RC build, fails the build
+(`-PallowPrerelease` to build against a pre-release on purpose). `scripts/check.sh` passes
 `$IDELINK_IDE_DIR` as `ideDir` when that variable is set (empty forces the download).
 
 Scratch files go in the repository's `tmp/` (gitignored), never `/tmp`.
